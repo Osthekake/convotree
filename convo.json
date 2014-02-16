@@ -1,0 +1,32 @@
+{
+  "entry" : {
+  	"text" : "This is the first choice",
+  	"options" : [
+  		{
+  			"text" : "I want to win",
+  			"goto" : "win"
+  		},
+  		{
+  			"text" : "I want options",
+  			"goto" : "options"
+  		}
+  	]
+  },
+  "options" : {
+  	"text" : "These are the options",
+  	"options" : [
+  		{
+  			"text" : "I want to win",
+  			"goto" : "win"
+  		},
+  		{
+  			"text" : "I want to go back",
+  			"goto" : "entry"
+  		}
+  	]
+  },
+  "win" : {
+  	"text" : "You won!",
+  	"options" : []
+  }
+}

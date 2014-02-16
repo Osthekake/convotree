@@ -1,0 +1,87 @@
+<html>
+<body>
+<h3>Text:</h3>
+<div id="text"></div>
+<h3>Choices:</h3>
+<ul id="options"></ul>
+<br/><br/><br/><br/><br/><br/>
+<h3>How to:</h3>
+<p>
+	Edit <i>convo.json</i> in a text editor and enter it here.
+</p>
+<input type="file" id="file"/><button onclick="load();">Load</button>
+<div id="fileContents"></div>
+<script type="text/javascript">
+
+var textArea = document.getElementById("text");
+var options = document.getElementById("options");
+
+function load(){
+	var file = document.getElementById('file').files[0];
+	var reader = new FileReader();
+    reader.readAsText(file, "UTF-8");
+    reader.onload = function (evt) {
+        document.getElementById("fileContents").innerHTML = "File read";
+        loadConvoTree(JSON.parse(evt.target.result));
+    }
+    reader.onerror = function (evt) {
+        document.getElementById("fileContents").innerHTML = "error reading file";
+    }
+}
+
+function loadConvoTree(convo) {
+	selectConvo(convo, "entry")();
+}
+
+function selectConvo(convo, which) {
+	return function () {
+		console.log("selected choice: " + which);
+		textArea.innerHTML = convo[which].text;
+		buildOptions(convo, which);
+	}
+}
+
+function buildOptions(convo, which) {
+	var arr = convo[which].options;
+	var html = [];
+	var length = arr.length,
+		li = null,
+	    option = null;
+	for (var i = 0; i < length; i++) {
+	  	option = arr[i];
+	  	html.push("<li><a id=\""+"option."+i+"\"href=\"#\">" + option.text + "</a></li>\n");
+
+	}
+	options.innerHTML = html.join("");
+	for (var i = 0; i < length; i++) {
+		option = arr[i];
+		li = document.getElementById("option."+i);
+		li.onclick = selectConvo(convo, option["goto"]);
+		console.log("available choice: " +"option."+i + "   " + option["goto"]);
+	}
+}
+
+//var convo = loadJson('convo.json');
+
+//var client = new XMLHttpRequest();
+//var convo = null;
+//var text = document.getElementById("text");
+//client.open('GET', 'convo.json');
+//client.onreadystatechange = function() {
+//	if(client.readyState === 4){
+//        if(client.status === 200 || client.status == 0){
+//            var allText = client.responseText;
+            //alert(allText);
+//            convo = JSON.parse(client.responseText);
+//        }
+//    }
+	
+//}
+//client.send();
+
+
+
+</script>
+
+</body>
+</html>
